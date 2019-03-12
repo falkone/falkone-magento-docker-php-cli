@@ -1,0 +1,21 @@
+#!/bin/sh
+set -e
+
+# Ensure our Magento directory exists
+mkdir -p $MAGENTO_ROOT
+chown www-data:www-data $MAGENTO_ROOT
+
+# Get fix cron owner and permission
+find /var/spool/cron/crontabs -type f -exec sh -c 'chown $(basename {}) {}' \;
+find /var/spool/cron/crontabs -type f -exec "chmod 600 {}" \;
+
+# start syslog and cron
+syslogd
+crond
+
+# first arg is `-f` or `--some-option`
+if [ "${1#-}" != "$1" ]; then
+	set -- php "$@"
+fi
+
+exec "$@"
