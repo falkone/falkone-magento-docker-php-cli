@@ -4,13 +4,21 @@ FROM php:7.2-cli-alpine3.9
 RUN apk add --update --no-cache \
         mc \
         git \
+        curl \
         redis \
         ssmtp \
         screen \
+        composer \
         mysql-client \
-    && docker-php-ext-configure \
-        gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
-    && docker-php-ext-install \
+        libpng-dev \
+        freetype-dev \
+        libjpeg-turbo-dev \
+    && docker-php-ext-configure gd \
+        --with-gd \
+        --with-freetype-dir=/usr/include/ \
+        --with-png-dir=/usr/include/ \
+        --with-jpeg-dir=/usr/include/ \
+    && docker-php-ext-install -j$(nproc) \
         bcmath \
         ctype \
         curl \
