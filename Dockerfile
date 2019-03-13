@@ -8,6 +8,7 @@ RUN apk add --update --no-cache \
         redis \
         ssmtp \
         screen \
+        libcurl \
         composer \
         mysql-client \
         libpng-dev \
