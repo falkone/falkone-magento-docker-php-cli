@@ -1,7 +1,22 @@
 FROM php:7.2-cli-alpine3.9
-
-# Install dependencies
-RUN apk add --update --no-cache \
+ENV PHPIZE_DEPS \
+    autoconf \
+    cmake \
+    file \
+    g++ \
+    gcc \
+    libc-dev \
+    pcre-dev \
+    make \
+    git \
+    pkgconf \
+    re2c \
+    # for GD
+    freetype-dev \
+    libpng-dev  \
+    libjpeg-turbo-dev \
+    # Install dependencies
+    && apk add --update --no-cache \
         mc \
         git \
         curl \
@@ -10,6 +25,10 @@ RUN apk add --update --no-cache \
         screen \
         composer \
         mysql-client \
+        icu-dev \
+        curl-dev \
+        libxslt-dev \
+        libxml2-dev \
         libpng-dev \
         freetype-dev \
         libjpeg-turbo-dev \
@@ -18,6 +37,12 @@ RUN apk add --update --no-cache \
         --with-freetype-dir=/usr/include/ \
         --with-png-dir=/usr/include/ \
         --with-jpeg-dir=/usr/include/ \
+    && docker-php-ext-configure bcmath --enable-bcmath \
+    && docker-php-ext-configure intl --enable-intl \
+    && docker-php-ext-configure curl \
+    && docker-php-ext-configure pdo_mysql --with-pdo-mysql \
+    && docker-php-ext-configure mbstring --enable-mbstring \
+    && docker-php-ext-configure soap --enable-soap \
     && docker-php-ext-install -j$(nproc) \
         bcmath \
         ctype \
@@ -28,7 +53,6 @@ RUN apk add --update --no-cache \
         intl \
         mbstring \
         opcache \
-        openssl\
         pdo_mysql \
         soap \
         sockets \
@@ -38,7 +62,6 @@ RUN apk add --update --no-cache \
 
 COPY docker-php-entrypoint /usr/local/bin/
 RUN ["chmod", "+x", "/usr/local/bin/docker-php-entrypoint"]
-RUN ln -s /usr/local/bin/php /usr/bin/php
 
 ENV MAGENTO_ROOT /var/www/magento
 
