@@ -14,9 +14,9 @@ ENV PHPIZE_DEPS \
     # for GD
     freetype-dev \
     libpng-dev  \
-    libjpeg-turbo-dev \
+    libjpeg-turbo-dev
     # Install dependencies
-    && apk add --update --no-cache \
+RUN apk add --update --no-cache \
         mc \
         git \
         curl \
