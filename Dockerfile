@@ -23,6 +23,7 @@ ENV PHPIZE_DEPS \
         redis \
         ssmtp \
         screen \
+        libcurl \
         composer \
         mysql-client \
         icu-dev \
