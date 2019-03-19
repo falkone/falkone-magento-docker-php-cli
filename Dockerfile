@@ -19,10 +19,10 @@ ENV PHPIZE_DEPS \
 RUN apk add --update --no-cache \
         mc \
         git \
+        bash \
         curl \
         redis \
         ssmtp \
-        screen \
         composer \
         mysql-client \
         icu-dev \
