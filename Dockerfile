@@ -15,7 +15,7 @@ ENV PHPIZE_DEPS \
     freetype-dev \
     libpng-dev  \
     libjpeg-turbo-dev
-    # Install dependencies
+    # Install dependencies, addons and php-extension
 RUN apk add --update --no-cache \
         mc \
         git \
@@ -23,7 +23,6 @@ RUN apk add --update --no-cache \
         curl \
         redis \
         ssmtp \
-        composer \
         mysql-client \
         icu-dev \
         curl-dev \
@@ -32,6 +31,7 @@ RUN apk add --update --no-cache \
         libpng-dev \
         freetype-dev \
         libjpeg-turbo-dev \
+    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && docker-php-ext-configure gd \
         --with-gd \
         --with-freetype-dir=/usr/include/ \
@@ -62,6 +62,7 @@ RUN apk add --update --no-cache \
 
 COPY docker-php-entrypoint /usr/local/bin/
 RUN ["chmod", "+x", "/usr/local/bin/docker-php-entrypoint"]
+ENTRYPOINT ["docker-php-entrypoint"]
 
 ENV MAGENTO_ROOT /var/www/magento
 
